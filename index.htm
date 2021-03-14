@@ -1,13 +1,173 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <title>CompanyDirectory</title>
+    <title>Company Directory</title>
     <meta charset="utf-8">
-    <meta name="description" content="CompanyDirectory">
+    <meta name="description" content="Company Directory">
 	<meta name="author" content="Dariusz Swoszowski">
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <link rel="shortcut icon" type="image/jpg" href="libs/img/favicon.ico"/>
+    <link rel="stylesheet" type="text/css" href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.0-beta2/dist/css/bootstrap.min.css"  integrity="sha384-BmbxuPwQa2lc/FVzBcNJ7UAyJxM6wuqIj61tLrc4wSX0szH/Ev+nYRRuWlolflfl" crossorigin="anonymous">
+    <link rel="stylesheet" type="text/css" href="libs/css/style.css" />
 </head>
 <body>
-<h1>COMPANY DIRECTORY</h1>
+    <div class="container-fluid">
+        <div class="row justify-content-center text-white bg-primary">
+            <div class="col d-inline-flex flex-nowrap align-items-center">
+                <button type="button" class="btn btn-primary btn-sm me-2" id="imgLogo"><img src="libs/img/company.svg" class="logo" id="logo" alt="Company Directory"></button>
+                <h1 id="h1">Company Directory</h1>
+            </div>
+        </div>
+    <div class="row">
+        <div class="col order-sm-2 col-sm-6 mb-2 mt-2 d-flex justify-content-around justify-content-sm-start col-sm-4 col-sm-push-8">
+                <button type="button" class="btn btn-outline-primary me-sm-4" id="imgB1" data-bs-toggle="modal" data-bs-target="#modalDepartments"><img src="libs/img/departments.svg" class="extraDataImg" id="imgB1a" alt="Departments"> Departments</button>
+                <button type="button" class="btn btn-outline-primary me-sm-4" id="imgB2"><img src="libs/img/locations.svg" class="extraDataImg" id="imgB2a" alt="Locations"> Locations</button> 
+            </div>
+        <div class="col-12 order-sm-1 mt-sm-2 col-sm-5 col-lg-4 col-xl-3">
+            <form>
+                <div class="input-group">
+                    <input type="text" class="form-control" placeholder="Search..." aria-label="Search" aria-describedby="Search">
+                    <div class="input-group-append">
+                        <div class="btn-group">
+                            <button type="button" class="btn btn-primary">All</button>
+                            <button type="button" class="btn btn-primary dropdown-toggle dropdown-toggle-split" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                            </button>
+                            <div class="dropdown-menu" id="filters-menu">
+                              <a class="dropdown-item" href="#">Departments</a>
+                            <div class="dropdown-divider"></div>
+                              <a class="dropdown-item" href="#">Locations</a>
+                            </div>
+                          </div>
+                    </div>
+                </div>
+            </form>
+        </div>
+        </div>
+        <div class="row">
+            <div class="col col-sm-5 col-lg-4 col-xl-3">
+                <div class="card bg-light mt-2 records-card">
+                    <div class="card-header">Personnel</div>
+                    <div class="card-body body-records overflow-auto" id="records-card-list">
+                        <div class="list-group records" id="list-tab" role="tablist">
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="col col-sm-7 col-lg-8 col-xl-9 d-none d-sm-block">
+                <h1>Data</h1>
+            </div>
+        </div>
+    </div>
+
+    <div class="modal fade" data-bs-backdrop="static" tabindex="-1" id="modalDepartments">
+        <div class="modal-dialog modal-dialog-scrollable">
+          <div class="modal-content">
+            <div class="modal-header d-flex justify-content-between align-items-center">
+              <h5 class="modal-title"><img src="libs/img/departments.svg" class="imgModal" alt="Locations">Departments</h5>
+             <div class="d-flex justify-content-between"><button type="button" class="btn btn-primary float-end me-3"  data-bs-toggle="collapse" data-bs-target="#addDepartment" id="newDepartment">Add new</button><div><button type="button" class="btn-close showRecords closeDepartmentModal" data-bs-dismiss="modal" aria-label="Close"></button></div></div>
+            </div>
+            <div class="collapse" id="addDepartment">
+              <div id="newDepartmentError"></div>
+                <div class="card card-body">
+                    <form class="needs-validation" id="departmentForm"  onsubmit="return false;" novalidate>
+                      <h5 class="col-12">New Department:</h5>
+                     <div class="form-group col-6 form-floating"> 
+                    <input type="text" class="form-control" id="departmentName" autocomplete="off" minlength="3" maxlength="53" required>
+                    <label for="departmentName">Department's name</label>
+                    <div class="valid-tooltip">
+                        Looks good!
+                      </div>
+                      <div class="invalid-tooltip" id="depNameValidation">Provide a name of the department.</div>
+                    
+                    </div>
+                    <div class="form-group createDepFormElement col-5 form-floating"> 
+                    <select class="form-select form-control" id="depLocationsList" required></select>
+                    <label for="depLocationsList">Location</label>
+                        <div class="valid-tooltip">
+                          Looks good!
+                        </div>
+                        <div class="invalid-tooltip">
+                          Choose the location.
+                        </div>                   
+                      </div>
+                    
+                    <button type="button" class="btn btn-secondary me-3" data-bs-toggle="collapse" data-bs-target="#addDepartment" id="cancelNewDepartment">Cancel</button>
+                    <button class="btn btn-primary" type="submit" data-bs-target="#modalConfirmNewDep" id="createDepButton">Create Department</button>
+                      </form>
+
+                </div>
+              </div>
+            <div class="modal-body">
+              <div id="newDepartmentSuccess"></div>
+                <ul class="list-group" id="departments-list"></ul>
+            </div>
+            <div class="modal-footer">
+              <button type="button" class="btn btn-secondary showRecords closeDepartmentModal" data-bs-dismiss="modal">Close</button>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div class="modal fade" data-bs-backdrop="static" tabindex="-1" id="modalConfirmNewDep">
+        <div class="modal-dialog modal-dialog-centered modalConfirmDepForm">
+          <div class="modal-content">
+            <div class="modal-header d-flex justify-content-between align-items-center">
+              <h5 class="modal-title" id="pleaseConfirm">Please confirm</h5>
+             </div>
+            <div class="modal-body overflow-hidden" id="newDepConfirmModal">
+                New Department
+                <ul>
+                  <li>Name: <span id="newDepNameConfirm"></span></li>
+                  <li>Location: <span id="newDepLocationConfirm"></span></li>
+                </ul>
+            </div>
+            <div class="modal-footer">
+              <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+              <button type="button" class="btn btn-primary" data-bs-dismiss="modal" id="createDepartment">Confirm</button>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div class="modal fade" data-bs-backdrop="static" tabindex="-1" id="modalConfirmEditDep">
+        <div class="modal-dialog modal-dialog-centered modalConfirmDepForm">
+          <div class="modal-content bg-warning-500" id="editDepContent">
+            <div class="modal-header d-flex justify-content-between align-items-center">
+              <h5 class="modal-title" id="pleaseConfirm">Update Department</h5>
+             </div>
+            <div class="modal-body" id="newDepConfirmModal">
+              <form class="needs-validation" id="departmentForm"  onsubmit="return false;" novalidate>
+               <div class="form-group col-6 form-floating"> 
+              <input type="text" class="form-control" id="departmentName" autocomplete="off" minlength="3" maxlength="53" required>
+              <label for="departmentName">Department's name</label>
+              <div class="valid-tooltip">
+                  Looks good!
+                </div>
+                <div class="invalid-tooltip" id="depNameValidation">Provide a name of the department.</div>
+              
+              </div>
+              <div class="form-group createDepFormElement col-5 form-floating"> 
+              <select class="form-select form-control" id="depLocationsList" required></select>
+              <label for="depLocationsList">Location</label>
+                  <div class="valid-tooltip">
+                    Looks good!
+                  </div>
+                  <div class="invalid-tooltip">
+                    Choose the location.
+                  </div>                   
+                </div>
+                </form>
+            </div>
+            <div class="modal-footer">
+              <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancel</button>
+              <button class="btn btn-primary" type="submit" data-bs-target="#modalConfirmNewDep" id="#">Save changes</button>
+            </div>
+          </div>
+        </div>
+      </div>
+
+    <script src="libs/js/jquery-2.2.3.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.0-beta2/dist/js/bootstrap.bundle.min.js" integrity="sha384-b5kHyXgcpbZJO/tY9Ul7kGkf1S0CWuKcCD38l8YkeH8z8QjE0GmW1gYU5S9FOnJ0" crossorigin="anonymous"></script>
+    <script type="application/javascript" src="libs/js/script.js"></script>   
 </body>
 </html>
