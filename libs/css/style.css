@@ -11,20 +11,19 @@ html, body {
 #filters-menu {
     right:1px;
 }
-#departmentForm {
-    
+#departmentForm, #locationForm {  
     display:flex;
     flex-wrap: wrap;
     justify-content: space-between;
 }
-#createDepFormElement {
+#createDepFormElement, #createLocFormElement {
     margin:3px;
     width:47%;
 }
-#cancelNewDepartment, #createDepButton {
+#cancelNewDepartment, #createDepButton, #cancelNewLocation, #createLocButton {
     margin:40px 3px 1px 3px;
 }
-.confirmDepDelete {
+.confirmDepDelete, .confirmLocDelete {
     display:flex;
     text-align:center;
     position:absolute;
@@ -33,7 +32,7 @@ html, body {
     left:0px;
     top:0px;
 }
-.alertsDep {
+.alertsDep, .alertsLoc {
     display:flex;
     align-items: center;
     justify-content: space-between;
@@ -42,7 +41,7 @@ html, body {
     font-size:0.8em;
 }
 
-.alertsDep2 {
+.alertsDep2,.alertsLoc2 {
     position:absolute;
     height:100%;
     width:100%;
@@ -53,20 +52,20 @@ html, body {
     left:0px;
 }
 
-.alertsDep2-danger { 
+.alertsDep2-danger, .alertsLoc2-danger { 
 background-color:#ff4d4d;
 padding:0px 55px;
 }
 
-.alertsDep2-success { 
+.alertsDep2-success, .alertsLoc2-success { 
 background-color:#00cc00;
 }
 
-.depContainter {
+.depContainter, .locContainter {
     position:relative;
     height:100%;
 }
-.deleteDepTitle {
+.deleteDepTitle, .deleteLocTitle {
     margin-right:10px;
 }
 .extraDataImg, .pencil {
@@ -136,34 +135,82 @@ background-color:#00cc00;
     border-color: white;
     margin:5px;
 }
-#modalConfirmNewDep li {
+#modalConfirmNewLoc, #modalConfirmNewDep, #editLocationSuccess, #editDepartmentSuccess {
+    z-index:1052 !important;
+}
+#modalConfirmNewDep li, #modalConfirmNewLoc li {
     list-style-type: none;
 }
-
-#modalConfirmNewDep .modal-content {
+#modalConfirmNewDep .modal-content, #modalConfirmNewLoc .modal-content {
     margin:0 auto;
     width:70%;
     background-color:#fdf6e1;
 }
-#newDepConfirmModal span {
+#newDepConfirmModal span, #newLocConfirmModal span  {
     font-weight:bold;
 }
 #pleaseConfirm {
     font-weight: bold;
 }
-/* Update Department */
-#editDepContent {
-    background-color:#e6ffcc;
+
+/*------- Update Department -------*/
+#editDepContent, #editLocContent {
+    margin: 0 auto;
+    box-shadow: 2px 2px 3px silver;
+    width:90%;
+    background-color:#ffffcc;
 }
 .form-group {
     position: relative;
   }
-
+#editSuccessBody {
+    margin: 0 auto;
+    box-shadow: 2px 2px 3px silver;
+    width:90%;
+    background-color:#5dd55d;
+}
+/*------- Employee Data -------*/
+#personnelHeader {
+    display:flex;
+    align-items: center;
+    vertical-align: center;
+    height:55px;
+}
+#personHeader {
+    display:flex;
+    align-items: center;
+    vertical-align: center;
+    height:50px;
+}
+.personQuery {
+    margin:10px;
+}
+#editProfileButton {
+    border:none;
+    margin:10px;
+}
+.employeeInfo {
+    padding-top:20px;
+    font-size:20px;
+}
+.infoSpan {
+ font-size:13px;
+}
+.infoHr {
+    margin:4px 0px;
+    width:90%;   
+}
+.big-circle {
+    padding-top:15px;
+    font-size:1.4em;
+    width:70px;
+    height:70px;
+}
   @media only screen and (min-width: 510px) {
-    .alertsDep2 {
+    .alertsDep2, .alertsLoc2 {
         font-size:1em;  
         }
-    .alertsDep2-danger { 
+    .alertsDep2-danger, .alertsLoc2-danger { 
         padding:0px;
         }
   }

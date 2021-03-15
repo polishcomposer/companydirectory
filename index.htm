@@ -21,7 +21,7 @@
     <div class="row">
         <div class="col order-sm-2 col-sm-6 mb-2 mt-2 d-flex justify-content-around justify-content-sm-start col-sm-4 col-sm-push-8">
                 <button type="button" class="btn btn-outline-primary me-sm-4" id="imgB1" data-bs-toggle="modal" data-bs-target="#modalDepartments"><img src="libs/img/departments.svg" class="extraDataImg" id="imgB1a" alt="Departments"> Departments</button>
-                <button type="button" class="btn btn-outline-primary me-sm-4" id="imgB2"><img src="libs/img/locations.svg" class="extraDataImg" id="imgB2a" alt="Locations"> Locations</button> 
+                <button type="button" class="btn btn-outline-primary me-sm-4" id="imgB2" data-bs-toggle="modal" data-bs-target="#modalLocations"><img src="libs/img/locations.svg" class="extraDataImg" id="imgB2a" alt="Locations"> Locations</button> 
             </div>
         <div class="col-12 order-sm-1 mt-sm-2 col-sm-5 col-lg-4 col-xl-3">
             <form>
@@ -46,7 +46,7 @@
         <div class="row">
             <div class="col col-sm-5 col-lg-4 col-xl-3">
                 <div class="card bg-light mt-2 records-card">
-                    <div class="card-header">Personnel</div>
+                    <div class="card-header" id="personnelHeader">Personnel</div>
                     <div class="card-body body-records overflow-auto" id="records-card-list">
                         <div class="list-group records" id="list-tab" role="tablist">
                         </div>
@@ -54,9 +54,21 @@
                 </div>
             </div>
             <div class="col col-sm-7 col-lg-8 col-xl-9 d-none d-sm-block">
-                <h1>Data</h1>
-            </div>
-        </div>
+                <div class="row">
+                  <div class="col-12">
+                    <div class="card bg-light mt-2 records-card">
+                    <div class="card-header"  id="personHeader">
+                      Employee Data 
+                      <button type="button" class="btn btn-sm btn-primary mx-3 me-sm-4 "><img src="libs/img/pencil.svg" class="whiteDataImg" alt="Edit Personal Data"> Edit</button>
+                      <button type="button" class="btn btn-sm btn-primary me-sm-4 "><img src="libs/img/trash.svg" class="whiteDataImg" alt="Delete Employee Data"> Delete</button> 
+                    </div>
+                    <div class="card-body overflow-auto bg-white">
+                       <div id="employeeData"></div>
+                    </div>
+                    </div>
+                  </div>
+              </div>
+          </div>
     </div>
 
     <div class="modal fade" data-bs-backdrop="static" tabindex="-1" id="modalDepartments">
@@ -70,10 +82,10 @@
               <div id="newDepartmentError"></div>
                 <div class="card card-body">
                     <form class="needs-validation" id="departmentForm"  onsubmit="return false;" novalidate>
-                      <h5 class="col-12">New Department:</h5>
+                      <h5 class="col-12" id="department-edit-title"></h5>
                      <div class="form-group col-6 form-floating"> 
                     <input type="text" class="form-control" id="departmentName" autocomplete="off" minlength="3" maxlength="53" required>
-                    <label for="departmentName">Department's name</label>
+                    <label for="departmentName">Department name</label>
                     <div class="valid-tooltip">
                         Looks good!
                       </div>
@@ -92,17 +104,37 @@
                       </div>
                     
                     <button type="button" class="btn btn-secondary me-3" data-bs-toggle="collapse" data-bs-target="#addDepartment" id="cancelNewDepartment">Cancel</button>
-                    <button class="btn btn-primary" type="submit" data-bs-target="#modalConfirmNewDep" id="createDepButton">Create Department</button>
+                    <button class="btn btn-primary" type="submit" data-bs-target="#modalConfirmNewDep" id="createDepButton"></button>
                       </form>
 
                 </div>
               </div>
-            <div class="modal-body">
+            <div class="modal-body" id="dep-body-list">
               <div id="newDepartmentSuccess"></div>
                 <ul class="list-group" id="departments-list"></ul>
             </div>
             <div class="modal-footer">
               <button type="button" class="btn btn-secondary showRecords closeDepartmentModal" data-bs-dismiss="modal">Close</button>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div class="modal fade" data-bs-backdrop="static" tabindex="-1" id="modalConfirmNewLoc">
+        <div class="modal-dialog modal-dialog-centered modalConfirmLocForm">
+          <div class="modal-content">
+            <div class="modal-header d-flex justify-content-between align-items-center">
+              <h5 class="modal-title" id="pleaseConfirm">Please confirm</h5>
+             </div>
+            <div class="modal-body overflow-hidden" id="newLocConfirmModal">
+              <h5>Location</h5>
+                <ul>
+                  <li>Name: <span id="newLocNameConfirm"></span></li>
+                </ul>
+            </div>
+            <div class="modal-footer">
+              <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+              <button type="button" class="btn btn-primary" data-bs-dismiss="modal" id="createLocation">Confirm</button>
             </div>
           </div>
         </div>
@@ -115,7 +147,7 @@
               <h5 class="modal-title" id="pleaseConfirm">Please confirm</h5>
              </div>
             <div class="modal-body overflow-hidden" id="newDepConfirmModal">
-                New Department
+                <h5>Department</h5>
                 <ul>
                   <li>Name: <span id="newDepNameConfirm"></span></li>
                   <li>Location: <span id="newDepLocationConfirm"></span></li>
@@ -129,38 +161,59 @@
         </div>
       </div>
 
-      <div class="modal fade" data-bs-backdrop="static" tabindex="-1" id="modalConfirmEditDep">
-        <div class="modal-dialog modal-dialog-centered modalConfirmDepForm">
-          <div class="modal-content bg-warning-500" id="editDepContent">
+      <div class="modal fade" data-bs-backdrop="static" tabindex="-1" id="editDepartmentSuccess">
+        <div class="modal-dialog modal-dialog-centered">
+          <div class="modal-content" id="editSuccessBody">
+            <div class="modal-body overflow-hidden">
+              <h4 class="alert-heading">Success!</h4><p>The department has been updated.</p>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div class="modal fade" data-bs-backdrop="static" tabindex="-1" id="editLocationSuccess">
+        <div class="modal-dialog modal-dialog-centered">
+          <div class="modal-content" id="editSuccessBody">
+            <div class="modal-body overflow-hidden">
+              <h4 class="alert-heading">Success!</h4><p>The location has been updated.</p>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div class="modal fade" data-bs-backdrop="static" tabindex="-1" id="modalLocations">
+        <div class="modal-dialog modal-dialog-scrollable">
+          <div class="modal-content">
             <div class="modal-header d-flex justify-content-between align-items-center">
-              <h5 class="modal-title" id="pleaseConfirm">Update Department</h5>
-             </div>
-            <div class="modal-body" id="newDepConfirmModal">
-              <form class="needs-validation" id="departmentForm"  onsubmit="return false;" novalidate>
-               <div class="form-group col-6 form-floating"> 
-              <input type="text" class="form-control" id="departmentName" autocomplete="off" minlength="3" maxlength="53" required>
-              <label for="departmentName">Department's name</label>
-              <div class="valid-tooltip">
-                  Looks good!
+              <h5 class="modal-title"><img src="libs/img/locations.svg" class="imgModal" alt="Locations">Locations</h5>
+             <div class="d-flex justify-content-between"><button type="button" class="btn btn-primary float-end me-3"  data-bs-toggle="collapse" data-bs-target="#addLocation" id="newLocation">Add new</button><div><button type="button" class="btn-close showRecords closeLocationModal" data-bs-dismiss="modal" aria-label="Close"></button></div></div>
+            </div>
+            <div class="collapse" id="addLocation">
+              <div id="newLocationError"></div>
+                <div class="card card-body">
+                    <form class="needs-validation" id="LocationForm"  onsubmit="return false;" novalidate>
+                      <h5 class="col-12" id="location-edit-title"></h5>
+                     <div class="form-group col-12 form-floating"> 
+                    <input type="text" class="form-control" id="locationName" autocomplete="off" minlength="3" maxlength="53" required>
+                    <label for="locationName">Location name</label>
+                    <div class="valid-tooltip">
+                        Looks good!
+                      </div>
+                      <div class="invalid-tooltip" id="locNameValidation">Provide a name of the location.</div>
+                    </div>
+                    
+                    <button type="button" class="btn btn-secondary me-3" data-bs-toggle="collapse" data-bs-target="#addLocation" id="cancelNewLocation">Cancel</button>
+                    <button class="btn btn-primary" type="submit" data-bs-target="#modalConfirmNewLoc" id="createLocButton"></button>
+                      </form>
+
                 </div>
-                <div class="invalid-tooltip" id="depNameValidation">Provide a name of the department.</div>
-              
               </div>
-              <div class="form-group createDepFormElement col-5 form-floating"> 
-              <select class="form-select form-control" id="depLocationsList" required></select>
-              <label for="depLocationsList">Location</label>
-                  <div class="valid-tooltip">
-                    Looks good!
-                  </div>
-                  <div class="invalid-tooltip">
-                    Choose the location.
-                  </div>                   
-                </div>
-                </form>
+            <div class="modal-body" id="loc-body-list">
+              <div id="newLocationSuccess"></div>
+                <ul class="list-group" id="locations-list"></ul>
             </div>
             <div class="modal-footer">
-              <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancel</button>
-              <button class="btn btn-primary" type="submit" data-bs-target="#modalConfirmNewDep" id="#">Save changes</button>
+              <button type="button" class="btn btn-secondary showRecords closeLocationModal" data-bs-dismiss="modal">Close</button>
             </div>
           </div>
         </div>
