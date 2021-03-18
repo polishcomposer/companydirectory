@@ -3,28 +3,7 @@
 	$executionStartTime = microtime(true);
 
 	include("config.php");
-
 	header('Content-Type: application/json; charset=UTF-8');
-
-	
-		$connCheckDepartment = new mysqli($cd_host, $cd_user, $cd_password, $cd_dbname, $cd_port, $cd_socket);
-		$queryDepartment = 'SELECT * FROM department WHERE locationID = ' . $_POST['id'];
-		$resultDepartment = $connCheckDepartment->query($queryDepartment);
-		$DepartmentCheck = [];
-		if($resultDepartment) {
-			while ($row = mysqli_fetch_assoc($resultDepartment)) {
-				array_push($DepartmentCheck, $row);
-			}
-		}
-	mysqli_close($connCheckDepartment);
-	
-	if(count($DepartmentCheck)>0) {
-		$output['status']['code'] = "300";
-		$output['status']['name'] = 'error';
-		$output['status']['des'] = 'Department can\'t be deleted! Assigned departments: ' . count($DepartmentCheck);
-		echo json_encode($output);
-		exit;
-	} else {
 
 	$conn = new mysqli($cd_host, $cd_user, $cd_password, $cd_dbname, $cd_port, $cd_socket);
 
@@ -44,9 +23,7 @@
 
 	}	
 
-	
-
-	$query = 'DELETE FROM location WHERE id = ' . $_POST['id'];
+	$query = 'SELECT p.id, p.lastName, p.firstName, p.jobTitle, p.email, departmentID, d.name as department, l.name as location FROM personnel p LEFT JOIN department d ON (d.id = p.departmentID) LEFT JOIN location l ON (l.id = d.locationID) WHERE p.id = ' . $_POST['id'];
 
 	$result = $conn->query($query);
 	
@@ -65,14 +42,19 @@
 
 	}
 
+	$data = [];
+	while ($row = mysqli_fetch_assoc($result)) {
+		array_push($data, $row);
+	}
+
 	$output['status']['code'] = "200";
 	$output['status']['name'] = "ok";
 	$output['status']['description'] = "success";
 	$output['status']['returnedIn'] = (microtime(true) - $executionStartTime) / 1000 . " ms";
-	$output['data'] = [];
+	$output['data'] = $data;
 	
 	mysqli_close($conn);
 
 	echo json_encode($output); 
-}
+
 ?>

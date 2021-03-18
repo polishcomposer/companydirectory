@@ -1,14 +1,5 @@
 <?php
 
-
-	// example use from browser
-	// http://localhost/companydirectory/libs/php/getDepartmentByID.php?id=2
-	
-	// remove next two lines for production
-
-	ini_set('display_errors', 'On');
-	error_reporting(E_ALL);
-
 	$executionStartTime = microtime(true);
 	include("config.php");
 	header('Content-Type: application/json; charset=UTF-8');
@@ -88,8 +79,6 @@
 		exit;
 
 	}	
-
-	// $_REQUEST used for development / debugging. Remember to cange to $_POST for production
 
 	$query = 'UPDATE department SET name = "' . $_POST["name"] . '" , locationID = ' . $_POST["locationID"] . ' WHERE id = ' . $_POST["id"];
 

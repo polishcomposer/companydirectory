@@ -1,30 +1,11 @@
 <?php
 
+
 	$executionStartTime = microtime(true);
 
 	include("config.php");
 
 	header('Content-Type: application/json; charset=UTF-8');
-
-	
-		$connCheckDepartment = new mysqli($cd_host, $cd_user, $cd_password, $cd_dbname, $cd_port, $cd_socket);
-		$queryDepartment = 'SELECT * FROM department WHERE locationID = ' . $_POST['id'];
-		$resultDepartment = $connCheckDepartment->query($queryDepartment);
-		$DepartmentCheck = [];
-		if($resultDepartment) {
-			while ($row = mysqli_fetch_assoc($resultDepartment)) {
-				array_push($DepartmentCheck, $row);
-			}
-		}
-	mysqli_close($connCheckDepartment);
-	
-	if(count($DepartmentCheck)>0) {
-		$output['status']['code'] = "300";
-		$output['status']['name'] = 'error';
-		$output['status']['des'] = 'Department can\'t be deleted! Assigned departments: ' . count($DepartmentCheck);
-		echo json_encode($output);
-		exit;
-	} else {
 
 	$conn = new mysqli($cd_host, $cd_user, $cd_password, $cd_dbname, $cd_port, $cd_socket);
 
@@ -37,16 +18,13 @@
 		$output['data'] = [];
 
 		mysqli_close($conn);
-
 		echo json_encode($output);
-
 		exit;
 
 	}	
 
-	
 
-	$query = 'DELETE FROM location WHERE id = ' . $_POST['id'];
+	$query = 'DELETE FROM personnel WHERE id = ' . $_POST['id'];
 
 	$result = $conn->query($query);
 	
@@ -58,9 +36,7 @@
 		$output['data'] = [];
 
 		mysqli_close($conn);
-
 		echo json_encode($output); 
-
 		exit;
 
 	}
@@ -72,7 +48,5 @@
 	$output['data'] = [];
 	
 	mysqli_close($conn);
-
 	echo json_encode($output); 
-}
 ?>

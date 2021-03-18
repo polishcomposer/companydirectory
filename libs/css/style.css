@@ -11,10 +11,23 @@ html, body {
 #filters-menu {
     right:1px;
 }
+.filtersImg {
+    margin-right:1px;
+    padding-bottom:3px;
+}
+.dropdown-toggle::after {
+    display: none;
+}
+#countPersonnel {
+    font-size:0.8em;
+}
 #departmentForm, #locationForm {  
     display:flex;
     flex-wrap: wrap;
     justify-content: space-between;
+}
+.foundName {
+    background-color:rgb(212, 212, 212) !important;
 }
 #createDepFormElement, #createLocFormElement {
     margin:3px;
@@ -22,6 +35,10 @@ html, body {
 }
 #cancelNewDepartment, #createDepButton, #cancelNewLocation, #createLocButton {
     margin:40px 3px 1px 3px;
+}
+#noRecords {
+    text-align:center;
+    margin:20px;
 }
 .confirmDepDelete, .confirmLocDelete {
     display:flex;
@@ -32,6 +49,11 @@ html, body {
     left:0px;
     top:0px;
 }
+#insertPersonConfirm .modal-content, #deletePersonConfirm .modal-content {
+    width:90%;
+    margin: 0px auto;
+    background-color:#fdf6e1;
+ }
 .alertsDep, .alertsLoc {
     display:flex;
     align-items: center;
@@ -131,11 +153,15 @@ background-color:#00cc00;
     margin-left:18px;
     font-style:italic;
 }
+.record-overflow {
+    overflow: hidden;
+    text-overflow: ellipsis; 
+}
 #imgLogo {
     border-color: white;
     margin:5px;
 }
-#modalConfirmNewLoc, #modalConfirmNewDep, #editLocationSuccess, #editDepartmentSuccess {
+#modalConfirmNewLoc, #modalConfirmNewDep, #editLocationSuccess, #editDepartmentSuccess, #insertPersonConfirm, #insertPersonSuccess, #editPersonSuccess {
     z-index:1052 !important;
 }
 #modalConfirmNewDep li, #modalConfirmNewLoc li {
@@ -169,6 +195,19 @@ background-color:#00cc00;
     width:90%;
     background-color:#5dd55d;
 }
+#editSuccessBody2 {
+    margin: 0 auto;
+    width:90%;
+    background-color:#5dd55d;
+}
+/*------- Employee Form -------*/
+#personForm div {
+margin-bottom:15px;
+}
+#personForm h6 {
+    font-weight:bold;
+    margin-bottom:5px;
+    }
 /*------- Employee Data -------*/
 #personnelHeader {
     display:flex;
@@ -180,7 +219,7 @@ background-color:#00cc00;
     display:flex;
     align-items: center;
     vertical-align: center;
-    height:50px;
+    height:48px;
 }
 .personQuery {
     margin:10px;
@@ -206,11 +245,16 @@ background-color:#00cc00;
     width:70px;
     height:70px;
 }
-  @media only screen and (min-width: 510px) {
+@media only screen and (min-width: 510px) {
     .alertsDep2, .alertsLoc2 {
         font-size:1em;  
         }
     .alertsDep2-danger, .alertsLoc2-danger { 
         padding:0px;
         }
-  }
+    }
+@media only screen and (min-width: 576px) {
+        .activeRecord, .activeRecord:hover {
+        background-color:#b3e6ff;
+        }
+    }
