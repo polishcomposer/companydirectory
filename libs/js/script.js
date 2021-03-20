@@ -265,13 +265,14 @@ $("#searchEngine").on("input", function() {
         $('#recordBlock').addClass('d-none');
         $('#closePersonCard').addClass('d-none');
         $('.topRow').removeClass('d-none');
+        $('#hideTopButtons').removeClass('d-none');
       $('#firstColumn').removeClass('d-none');
       });
     function showEmployee(personID, circleColor, listRecord, newQuery) {
       $('#person' + listRecord).addClass('activeRecord');
       $('#person' + listRecord).siblings().removeClass('activeRecord');
       $('.records').trigger('click');
-     
+      $('.search-row').addClass('d-none');
       $('#deleteEmployeeConfirmation').attr('onclick',`deleteEmployee(${personID})`);
       if(newQuery==1) {
         $('#recordBlock').removeClass('d-none');
@@ -742,7 +743,7 @@ function deleteEmployee(personID) {
        $("#imgB2").on("click", () => {
         getLocations();
         $('#records-card-list').addClass("overflow-hidden");
-        $('#records-card-list').removeClass("overflow-auto");
+        $('#records-card-list').removeClass("overflow-auto");   
       });
 
       $('.showRecords').on("click", () => {
@@ -1175,8 +1176,8 @@ function getLocations() {
           locNameLoop =`onClick="deleteLocation(${locResult['data'][a]['id']}, ${a}, '${locResult['data'][a]['name']}')"`;
            locations +=`<li class="list-group-item d-flex justify-content-between align-items-center locContainter" id="trashNumber${a}">
            <div>${a+1}. ${locResult['data'][a]['name']} </div>
-           <div class="d-flex align-items-center"><button type="button" class="btn btn-sm btn-outline-primary me-2 pencil-button pencil-button-locations"  data-bs-toggle="collapse" data-bs-target="#addLocation" ${locEdit}><img src="libs/img/pencil.svg" class="pencil" alt="Edit Location" id="locPencilImg${a}"></button>
-            <button type="button" class="btn btn-sm btn-outline-danger trash-button trash-button-locations" data-bs-toggle="collapse" data-bs-target="#thisLocation${a}" id="thisLocTrash${a}" ${locNameLoop}><img src="libs/img/trash.svg" class="trashcan" alt="Delete Location" id="locTrashImg${a}"></button></div>
+           <div class="d-flex align-items-center"><button type="button" class="btn btn-sm btn-outline-primary me-2 pencil-button pencil-button-locations"  data-bs-toggle="collapse" data-bs-target="#addLocation" ${locEdit}><img src="libs/img/pencil.svg" class="pencil smallPencil" alt="Edit Location" id="locPencilImg${a}"></button>
+            <button type="button" class="btn btn-sm btn-outline-danger trash-button trash-button-locations" data-bs-toggle="collapse" data-bs-target="#thisLocation${a}" id="thisLocTrash${a}" ${locNameLoop}><img src="libs/img/trash.svg" class="trashcan smallTrash" alt="Delete Location" id="locTrashImg${a}"></button></div>
             <div id="thisLocation${a}" class="alert alert-warning confirmLocDelete collapse"></div> </li>`; 
         }
       
@@ -1185,6 +1186,8 @@ function getLocations() {
         $("img", this).toggleClass("whiteDataImg"); 
         }
       );
+      $('.pencil-button').on('click', function() { $('.smallPencil').removeClass('whiteDataImg'); }); 
+      $('.trash-button').on('click', function() { $('.smallTrash').removeClass('whiteDataImg'); }); 
       $(".trash-button").on("mouseenter mouseleave", function() {
         $("img", this).toggleClass("whiteDataImg"); 
         }
@@ -1215,8 +1218,8 @@ function getDepartments() {
            departments +=`<li class="list-group-item d-flex justify-content-between align-items-center depContainter" id="trashNumber${a}">
            <div>${a+1}. ${depResult['data'][a]['name']} <br> 
            <span class="text-secondary font-weight-light department-location">${depResult['data'][a]['location']}</span></div>
-           <div class="d-flex align-items-center"><button type="button" class="btn btn-sm btn-outline-primary me-2 pencil-button pencil-button-departments"  data-bs-toggle="collapse" data-bs-target="#addDepartment" ${depEdit}><img src="libs/img/pencil.svg" class="pencil" alt="Edit Department" id="depPencilImg${a}"></button>
-            <button type="button" class="btn btn-sm btn-outline-danger trash-button trash-button-departments" data-bs-toggle="collapse" data-bs-target="#thisDepartment${a}" id="thisDepTrash${a}" ${depNameLoop}><img src="libs/img/trash.svg" class="trashcan" alt="Delete Department" id="depTrashImg${a}"></button></div>
+           <div class="d-flex align-items-center"><button type="button" class="btn btn-sm btn-outline-primary me-2 pencil-button pencil-button-departments"  data-bs-toggle="collapse" data-bs-target="#addDepartment" ${depEdit}><img src="libs/img/pencil.svg" class="pencil smallPencil" alt="Edit Department" id="depPencilImg${a}"></button>
+            <button type="button" class="btn btn-sm btn-outline-danger trash-button trash-button-departments" data-bs-toggle="collapse" data-bs-target="#thisDepartment${a}" id="thisDepTrash${a}" ${depNameLoop}><img src="libs/img/trash.svg" class="trashcan smallTrash" alt="Delete Department" id="depTrashImg${a}"></button></div>
             <div id="thisDepartment${a}" class="alert alert-warning confirmDepDelete collapse"></div> </li>`; 
         }
       
@@ -1225,6 +1228,8 @@ function getDepartments() {
         $("img", this).toggleClass("whiteDataImg"); 
         }
       );
+      $('.pencil-button').on('click', function() { $('.smallPencil').removeClass('whiteDataImg'); }); 
+      $('.trash-button').on('click', function() { $('.smallTrash').removeClass('whiteDataImg'); }); 
       $(".trash-button").on("mouseenter mouseleave", function() {
         $("img", this).toggleClass("whiteDataImg"); 
         }
@@ -1235,16 +1240,48 @@ function getDepartments() {
         }
       });
     }
+  
 //----------- Delete Location ----------- 
 function deleteLocation(locationID, number) {
   $('.pencil-button-locations').attr('disabled', true);
   $('.trash-button-locations').attr('disabled', true);
   $("#newLocation").attr('disabled', true);
-  $(`#thisLocation${number}`).html(`<div class="alertsLoc">
+
+  $.ajax({
+    url: "libs/php/deleteLocationByID-CHECK.php",
+    type: 'POST',
+    dataType: 'json',
+    data: {
+      id: locationID
+    },
+
+    success: function (deleteLocResult) {
+      if (deleteLocResult.status.name == "error") {
+      $(`#thisLocation${number}`).removeClass('alert-warning');
+      $(`#thisLocation${number}`).html(`<div class="justify-content-center alertsLoc2 alertsLoc2-danger">${deleteLocResult.status.des}</div>`);
+          setTimeout(function() {
+          $(`#errorDeleteLoc${number}`).fadeOut('normal');
+          getLocations();
+          cancelLocationDeletion();
+          }, 2000);  
+
+       } else if (deleteLocResult.status.name == "ok") {
+        $(`#thisLocation${number}`).html(`<div class="alertsLoc">
   <span>Please confirm deletion</span>
   <div class="d-flex justify-content-between align-items-center">
   <button type="button" class="btn btn-sm btn-secondary me-3" data-bs-toggle="collapse" data-bs-target="#thisLocation${number}" onClick="cancelLocationDeletion()">Cancel</button>
   <button type="button" class="btn btn-sm btn-success" onClick="deleteLocConf(${locationID}, ${number})">Confirm</button></div></div>`);
+     
+      }} , error: function (jqXHR, textStatus, errorThrown) {
+        console.log((jqXHR + '<br/>' + textStatus + '<br/>' + errorThrown));
+      }
+    });
+
+
+
+
+
+ 
 }
 function deleteLocConf(locationID, number) {
   $.ajax({
@@ -1291,11 +1328,38 @@ function cancelLocationDeletion() {
       $('.pencil-button-departments').attr('disabled', true);
       $('.trash-button-departments').attr('disabled', true);
       $("#newDepartment").attr('disabled', true);
-      $(`#thisDepartment${number}`).html(`<div class="alertsDep">
+
+
+      $.ajax({
+        url: "libs/php/deleteDepartmentByID.php",
+        type: 'POST',
+        dataType: 'json',
+        data: {
+          id: departmentID
+        },
+    
+        success: function (deleteDepResult) {
+          if (deleteDepResult.status.name == "error") {
+          $(`#thisDepartment${number}`).removeClass('alert-warning');
+          $(`#thisDepartment${number}`).html(`<div class="justify-content-center alertsDep2 alertsDep2-danger">${deleteDepResult.status.des}</div>`);
+              setTimeout(function() {
+              $(`#errorDeleteDep${number}`).fadeOut('normal');
+              getDepartments();
+              cancelDepartmentDeletion();
+              }, 2000);  
+
+           } else if (deleteDepResult.status.name == "ok") {
+          $(`#thisDepartment${number}`).html(`<div class="alertsDep">
       <span>Please confirm deletion</span>
       <div class="d-flex justify-content-between align-items-center">
       <button type="button" class="btn btn-sm btn-secondary me-3" data-bs-toggle="collapse" data-bs-target="#thisDepartment${number}" onClick="cancelDepartmentDeletion()">Cancel</button>
       <button type="button" class="btn btn-sm btn-success" onClick="deleteDepConf(${departmentID}, ${number})">Confirm</button></div></div>`);
+         
+          }} , error: function (jqXHR, textStatus, errorThrown) {
+            console.log((jqXHR + '<br/>' + textStatus + '<br/>' + errorThrown));
+          }
+        });
+
     }
    
     function deleteDepConf(departmentID, number) {
