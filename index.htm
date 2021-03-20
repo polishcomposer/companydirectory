@@ -13,17 +13,17 @@
 <body>
     <div class="container-fluid">
         <div class="row justify-content-center text-white bg-primary">
-            <div class="col d-inline-flex flex-nowrap align-items-center">
+            <div class="col d-inline-flex flex-nowrap align-items-center top-row">
                 <button type="button" class="btn btn-primary btn-sm me-2" id="imgLogo"><img src="libs/img/company.svg" class="logo" id="logo" alt="Company Directory"></button>
                 <h1 id="h1">Company Directory</h1>
             </div>
         </div>
     <div class="row">
-        <div class="col order-sm-2 col-sm-6 mb-2 mt-2 d-flex justify-content-around justify-content-sm-start col-sm-4 col-sm-push-8 d-sm-block topRow">
+        <div class="col order-sm-2 col-sm-7 mb-2 mt-2 d-flex justify-content-around justify-content-sm-start col-sm-push-8 d-sm-block topRow" id="hideTopButtons">
                 <button type="button" class="btn btn-outline-primary me-sm-4" id="imgB1" data-bs-toggle="modal" data-bs-target="#modalDepartments"><img src="libs/img/departments.svg" class="extraDataImg" id="imgB1a" alt="Departments"> Departments</button>
                 <button type="button" class="btn btn-outline-primary me-sm-4" id="imgB2" data-bs-toggle="modal" data-bs-target="#modalLocations"><img src="libs/img/locations.svg" class="extraDataImg" id="imgB2a" alt="Locations"> Locations</button> 
             </div>
-        <div class="col-12 order-sm-1 mt-sm-2 col-sm-5 col-lg-4 col-xl-3 d-sm-block topRow">
+        <div class="col-12 order-sm-1 mt-sm-2 col-sm-5 col-lg-4 col-xl-3 d-sm-block topRow ">
             <form>
                 <div class="input-group col-12">
                     <input type="text" class="form-control" placeholder="Search..." aria-label="Search" aria-describedby="Search" id="searchEngine">
@@ -63,7 +63,7 @@
                     <div class="card bg-light mt-2 records-card">
                     <div class="card-header"  id="personHeader"><div>
                       Employee
-                      <button type="button" class="btn btn-sm btn-primary mx-3 me-sm-4" data-bs-toggle="modal" data-bs-target="#modalPerson" id="editProfileTopButton"><img src="libs/img/pencil.svg" class="whiteDataImg" alt="Edit Personal Data"> Edit</button>
+                      <button type="button" class="btn btn-sm btn-primary mx-1 mx-sm-3 me-2 me-sm-4" data-bs-toggle="modal" data-bs-target="#modalPerson" id="editProfileTopButton"><img src="libs/img/pencil.svg" class="whiteDataImg" alt="Edit Personal Data"> Edit</button>
                       <button type="button" class="btn btn-sm btn-primary me-sm-4"  id="deleteEmployee" data-bs-toggle="modal" data-bs-target="#deletePersonConfirm"><img src="libs/img/trash.svg" class="whiteDataImg" alt="Delete Employee Data"> Delete</button> </div>
                       <button type="button" class="btn-close d-none d-sm-none" aria-label="Close" id="closePersonCard"></button>
                     </div>
